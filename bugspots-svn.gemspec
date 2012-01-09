@@ -11,13 +11,13 @@ Gem::Specification.new do |s|
   s.summary     = "Implementation of simple bug prediction hotspot heuristic"
   s.description = s.summary
 
-//  s.rubyforge_project = "bugspots-svn"
+#  s.rubyforge_project = "bugspots-svn"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-//  s.files = Dir.glob("{bin, lib}/**/*")
+#  s.files = Dir.glob("{bin, lib}/**/*")
 
   s.add_dependency "svn/client"
   s.add_dependency "rainbow"
