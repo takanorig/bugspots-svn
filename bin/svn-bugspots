@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'bugspots-svn'
+require 'optparse'
+
+ARGV << '--help' if ARGV.empty?
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: bugspots-svn /path/to/svn/repo"
+
+  # Option: Set Start Revision
+  opts.on('-s', '--rev_start [rev]', 'start revision') do |rstart|
+    options[:rev_start] = rstart.to_s
+  end
+  
+  # Option: Set End Revision
+  opts.on('-e', '--rev_end [rev]', 'end revision') do |rend|
+    options[:rev_end] = rend.to_s
+  end
+
+  # Option: Set Limit
+  opts.on('-l', '--limit [limit]', 'limit of log (integer)') do |l|
+    options[:limit] = l.to_i
+  end
+  
+  # Option: Set Bugfix Indicator
+  opts.on('-w', '--words ["w1,w2"]', 'bugfix indicator, ie: "refs,fixes,closed"') do |words|
+    options[:words] = words
+  end
+  
+  # Option: Set Username
+  opts.on('--username [username]', 'username') do |username|
+    options[:username] = username.to_s
+  end
+  
+  # Option: Set Password
+  opts.on('--password [password]', 'password') do |password|
+    options[:password] = password.to_s
+  end
+end.parse!
+
+# Set default value 
+options[:rev_start] ||= 1
+options[:rev_end] ||= "HEAD"
+options[:limit] ||= 500
+
+puts "Scanning #{ARGV[0]} repo".foreground(:green)
+
+fixes, spots = BugspotsSvn.scan(ARGV[0], options[:branch], options[:depth], options[:words])
+
+puts "\tFound #{fixes.size} bugfix commits, with #{spots.size} hotspots:".foreground(:yellow)
+puts
+
+puts "\tFixes:".foreground(:green).underline
+fixes.each do |fix|
+  message = "\t\t- "
+  message << "#{fix.date} " if options[:display_timestamps]
+  message << "#{fix.message}"
+  puts message.foreground(:yellow)
+end
+
+puts "\n"
+puts "\tHotspots:".foreground(:green).underline
+spots.each do |spot|
+  puts "\t\t#{spot.score}".foreground(:red) + " - #{spot.file}".foreground(:yellow)
+end
