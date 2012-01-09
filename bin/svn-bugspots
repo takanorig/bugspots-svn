@@ -50,7 +50,7 @@ options[:limit] ||= 500
 
 puts "Scanning #{ARGV[0]} repo".foreground(:green)
 
-fixes, spots = BugspotsSvn.scan(ARGV[0], options[:branch], options[:depth], options[:words])
+fixes, spots = BugspotsSvn.scan(ARGV[0], options[:rev_start], options[:rev_end], options[:limit], options[:words])
 
 puts "\tFound #{fixes.size} bugfix commits, with #{spots.size} hotspots:".foreground(:yellow)
 puts
