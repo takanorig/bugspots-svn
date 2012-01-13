@@ -16,7 +16,7 @@ module BugspotsSvn
     
     ctx = Svn::Client::Context.new
     
-    ctx.log(repo, rstart, rend, limit, true, true) do |changed_paths, rev, author, date, message|
+    ctx.log(repo, rend, rstart, limit, true, true) do |changed_paths, rev, author, date, message|
       if message =~ message_matchers
         fixes << Fix.new(message, date, changed_paths)
       end
