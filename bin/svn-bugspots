@@ -13,17 +13,17 @@ OptionParser.new do |opts|
   opts.banner = "Usage: bugspots-svn /path/to/svn/repo"
 
   # Option: Set Start Revision
-  opts.on('-s', '--rev_start [rev]', 'start revision') do |rstart|
+  opts.on('-s', '--rev_start [rev]', 'start revision (default: 1)') do |rstart|
     options[:rev_start] = rstart.to_s
   end
   
   # Option: Set End Revision
-  opts.on('-e', '--rev_end [rev]', 'end revision') do |rend|
+  opts.on('-e', '--rev_end [rev]', 'end revision (default: HEAD)') do |rend|
     options[:rev_end] = rend.to_s
   end
 
   # Option: Set Limit
-  opts.on('-l', '--limit [limit]', 'limit of log (integer)') do |l|
+  opts.on('-l', '--limit [limit]', 'limit of log (integer, default: 500)') do |l|
     options[:limit] = l.to_i
   end
   

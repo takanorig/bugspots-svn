@@ -11,7 +11,7 @@ module BugspotsSvn
     if words
       message_matchers = /#{words.split(',').join('|')}/
     else
-      message_matchers = /ref(s|d)?|fix(es|ed)?|close(s|d)?/i
+      message_matchers = /refs?|fix(es|ed)?|close(s|d)?/i
     end
     
     ctx = Svn::Client::Context.new
